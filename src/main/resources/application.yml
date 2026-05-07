@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: UniversityManagementSystem
+    # Application name Configuration
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+    # This will default to 'local' if SPRING_PROFILES_ACTIVE is not set in the environment
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/edu_stream_student
+    driver-class-name: org.postgresql.Driver
+     # Set the database connection properties
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+    # JPA/Hibernate Configuration
+
+  data:
+    web:
+      pageable:
+        default-page-size: 5
+        max-page-size: 100
+      # Pagination configuration
+
+server:
+  port: 8082
+  # Server port Configuration
+
+  servlet:
+    context-path: /ums
+    # Set the Context path
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    #Actuator configuration
