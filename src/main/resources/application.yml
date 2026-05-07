@@ -34,7 +34,7 @@ server:
   # Server port Configuration
 
   servlet:
-    context-path: /ums
+    context-path: /student
     # Set the Context path
 
 management:
