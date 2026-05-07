@@ -22,7 +22,7 @@ public class EdustreamStudentMsApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		log.info("EduStream Student Microservice started");
-		log.info("BFF is running at http://localhost:{}", port);
+		log.info("Student Microservice is running at http://localhost:{}", port);
 
 	}
 
