@@ -4,10 +4,13 @@ import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
 import com.example.edustream_studentMS.entity.Student;
 import com.example.edustream_studentMS.enums.StudentStatus;
+import com.example.edustream_studentMS.exception.StudentNotFoundException;
 import com.example.edustream_studentMS.repository.StudentRepository;
 import com.example.edustream_studentMS.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -60,9 +63,32 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public String getAllStudents() {
-        log.info("getAllStudents method called in StudentServiceImpl");
-        return "Get all students endpoint called";
+    public Page<Student> getAllStudents(Pageable pageable) {
+        log.info("================================ Get All Students Paginated ==============================");
+
+        // Call the database to retrieve the paginated list of students
+        log.info("Retrieving students from database with pagination - Page Number: {}, Page Size: {}, Sort: {}",
+                 pageable.getPageNumber(),
+                 pageable.getPageSize(),
+                 pageable.getSort());
+
+        Page<Student> response = studentRepository.findAll(pageable);
+
+        if (response.isEmpty()) {
+            log.warn("No records were found with Students.");
+            throw new StudentNotFoundException("any Id");
+        }
+
+        log.info("Retrieved students successfully. Total number of students found: {}", response.getTotalElements());
+
+        for (Student student : response) {
+            log.info("Student found with Student Id: {} First Name: {}, Last Name: {}, Email: {}, DOB: {}, Enrollment Date: {}, Status: {}",
+                    student.getStudentId(), student.getFirstName(), student.getLastName(), student.getEmail(),
+                    student.getDob(), student.getEnrollmentDate(), student.getStudentStatus());
+        }
+
+        return response;
+
     }
 
     /**
