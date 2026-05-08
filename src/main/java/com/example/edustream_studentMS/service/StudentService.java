@@ -7,4 +7,6 @@ public interface StudentService {
     String testService();
 
     RegisterStudentResponseDTO registerStudent(RegisterStudentRequestDTO registerStudentRequestDTO);
+
+    String getAllStudents();
 }
