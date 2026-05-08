@@ -38,5 +38,10 @@ public class StudentController {
                         .build());
     }
 
+    @PostMapping("/all")
+    public String getAllStudents() {
+        return studentService.getAllStudents();
+    }
+
 
 }
