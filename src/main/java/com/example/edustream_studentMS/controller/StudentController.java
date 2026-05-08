@@ -1,6 +1,7 @@
 package com.example.edustream_studentMS.controller;
 
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
+import com.example.edustream_studentMS.dto.requestDTO.StudentRequestDTO;
 import com.example.edustream_studentMS.dto.responseDTO.ApiResponse;
 import com.example.edustream_studentMS.dto.responseDTO.PageResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
@@ -54,6 +55,19 @@ public class StudentController {
                         .success(true)
                         .message("Students retrieved successfully")
                         .data(PageUtil.toPageResponse(response))
+                        .build());
+    }
+
+    @PostMapping("/getStudentById")
+    public ResponseEntity<ApiResponse<Student>> getStudentById(@RequestBody StudentRequestDTO request) {
+
+        Student response = studentService.getStudentById(request.getStudentId());
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.<Student>builder()
+                        .success(true)
+                        .message("Student retrieved successfully")
+                        .data(response)
                         .build());
     }
 
