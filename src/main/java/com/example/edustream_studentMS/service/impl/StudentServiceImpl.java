@@ -3,6 +3,7 @@ package com.example.edustream_studentMS.service.impl;
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
 import com.example.edustream_studentMS.entity.Student;
+import com.example.edustream_studentMS.enums.StudentStatus;
 import com.example.edustream_studentMS.repository.StudentRepository;
 import com.example.edustream_studentMS.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -26,19 +27,35 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public RegisterStudentResponseDTO registerStudent(RegisterStudentRequestDTO registerStudentRequestDTO) {
-        log.info("StudentServiceImpl: createStudent called");
+        log.info("================================ Registering New Student ==============================");
 
-        log.info("Student Details - Name: {}, Email: {}, DOB: {}",
-                 registerStudentRequestDTO.getFirstName() + " " + registerStudentRequestDTO.getLastName(),
+        log.info("Register Request details - First Name: {}, Last Name: {}, Email: {}, DOB: {}",
+                 registerStudentRequestDTO.getFirstName(),
+                 registerStudentRequestDTO.getLastName(),
                  registerStudentRequestDTO.getEmail(),
                  registerStudentRequestDTO.getDob());
 
-        return RegisterStudentResponseDTO.builder()
+        // Create a new Student entity with the requested data
+        Student registerStudent = Student.builder()
                 .studentId(generateStudentId())
                 .firstName(registerStudentRequestDTO.getFirstName())
                 .lastName(registerStudentRequestDTO.getLastName())
-                .dob(registerStudentRequestDTO.getDob())
                 .email(registerStudentRequestDTO.getEmail())
+                .dob(LocalDate.parse(registerStudentRequestDTO.getDob()))
+                .enrollmentDate(LocalDate.now())
+                .studentStatus(StudentStatus.ACTIVE)
+                .build();
+
+        // Save the new student to the database
+        log.info("Saving new student to database with studentId: {}", registerStudent.getStudentId());
+        studentRepository.save(registerStudent);
+
+        return RegisterStudentResponseDTO.builder()
+                .studentId(registerStudent.getStudentId())
+                .firstName(registerStudent.getFirstName())
+                .lastName(registerStudent.getLastName())
+                .dob(registerStudent.getDob().toString())
+                .email(registerStudent.getEmail())
                 .build();
     }
 
