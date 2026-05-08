@@ -91,6 +91,15 @@ public class StudentServiceImpl implements StudentService {
 
     }
 
+    @Override
+    public Student getStudentById(String studentId) {
+
+        // Find a Student by studentId
+        log.info("==================== Get Student by Student ID =================");
+
+        return findStudentByStudentId(studentId);
+    }
+
     /**
      *  ================================= Helper Methods =================================
      */
