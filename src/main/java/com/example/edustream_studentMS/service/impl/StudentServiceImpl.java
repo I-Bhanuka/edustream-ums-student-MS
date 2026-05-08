@@ -59,6 +59,12 @@ public class StudentServiceImpl implements StudentService {
                 .build();
     }
 
+    @Override
+    public String getAllStudents() {
+        log.info("getAllStudents method called in StudentServiceImpl");
+        return "Get all students endpoint called";
+    }
+
     /**
      *  ================================= Helper Methods =================================
      */
