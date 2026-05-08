@@ -1,5 +1,6 @@
 package com.example.edustream_studentMS.dto.requestDTO;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -20,5 +21,6 @@ public class RegisterStudentRequestDTO {
     private String dob;
 
     @NotBlank(message = "Email is required")
+    @Email(message = "Please provide a valid email address")
     private String email;
 }
