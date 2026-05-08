@@ -2,13 +2,18 @@ package com.example.edustream_studentMS.controller;
 
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
 import com.example.edustream_studentMS.dto.responseDTO.ApiResponse;
+import com.example.edustream_studentMS.dto.responseDTO.PageResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
+import com.example.edustream_studentMS.entity.Student;
 import com.example.edustream_studentMS.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import util.PageUtil;
 
 @RestController
 @RequestMapping("api")
@@ -39,8 +44,17 @@ public class StudentController {
     }
 
     @PostMapping("/all")
-    public String getAllStudents() {
-        return studentService.getAllStudents();
+    public ResponseEntity<ApiResponse<PageResponseDTO<Student>>> getAllStudents(Pageable pageable) {
+
+        Page<Student> response = studentService.getAllStudents(pageable);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.<PageResponseDTO<Student>>builder()
+                        .success(true)
+                        .message("Students retrieved successfully")
+                        .data(PageUtil.toPageResponse(response))
+                        .build());
     }
 
 
