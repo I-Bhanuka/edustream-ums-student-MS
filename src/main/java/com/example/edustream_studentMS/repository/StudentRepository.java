@@ -4,8 +4,18 @@ import com.example.edustream_studentMS.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface StudentRepository extends JpaRepository<UUID, Student> {
+public interface StudentRepository extends JpaRepository<Student, UUID> {
+
+    /**
+     * Query,
+     * SELECT *
+     * FROM student
+     * ORDER BY created_at DESC
+     * LIMIT 1;
+     */
+    Optional<Student> findTopByOrderByCreatedAtDesc();
 }
