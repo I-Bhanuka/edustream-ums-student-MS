@@ -12,4 +12,6 @@ public interface StudentService {
     RegisterStudentResponseDTO registerStudent(RegisterStudentRequestDTO registerStudentRequestDTO);
 
     Page<Student> getAllStudents(Pageable pageable);
+
+    Student getStudentById(String studentId);
 }
