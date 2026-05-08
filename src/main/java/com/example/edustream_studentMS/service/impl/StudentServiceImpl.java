@@ -134,4 +134,20 @@ public class StudentServiceImpl implements StudentService {
         studentId = String.format("%s-%d%04d", prefix, yearId, numberId); // "ST-20260001";
         return studentId;
     }
+
+    // Helper method to find the student by studentId
+    public Student findStudentByStudentId(String studentId) {
+        // Find the Student
+        log.info("Finding student by student id {} ... ", studentId);
+        Student std = studentRepository.findByStudentId(studentId).orElse(null);
+
+        // If student is not found, log the error and throw an exception
+        if (std == null){
+            log.info("Student with studentId {} not found", studentId);
+            throw new StudentNotFoundException("Id: " + studentId);
+        }
+
+        log.info("Student found with student id {}", studentId);
+        return std;
+    }
 }
