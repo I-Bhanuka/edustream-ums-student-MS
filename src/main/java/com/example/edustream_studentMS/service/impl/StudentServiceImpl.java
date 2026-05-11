@@ -149,6 +149,8 @@ public class StudentServiceImpl implements StudentService {
 
         }
 
+        log.info("Previous Student: {}", String.valueOf(std));
+
         // Split everything
         studentId = std.getStudentId();
         String[] parts = studentId.split("-");
@@ -171,6 +173,8 @@ public class StudentServiceImpl implements StudentService {
 
         // Construct the new studentId
         studentId = String.format("%s-%d%04d", prefix, yearId, numberId); // "ST-20260001";
+        log.info("Generated Student ID: {}", studentId);
+
         return studentId;
     }
 
