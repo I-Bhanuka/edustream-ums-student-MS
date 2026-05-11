@@ -3,6 +3,7 @@ package com.example.edustream_studentMS.controller;
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
 import com.example.edustream_studentMS.dto.requestDTO.StudentRequestDTO;
 import com.example.edustream_studentMS.dto.responseDTO.ApiResponse;
+import com.example.edustream_studentMS.dto.responseDTO.LimitedStudentResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.PageResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
 import com.example.edustream_studentMS.entity.Student;
@@ -45,9 +46,9 @@ public class StudentController {
     }
 
     @PostMapping("/all")
-    public ResponseEntity<ApiResponse<PageResponseDTO<Student>>> getAllStudents(Pageable pageable) {
+    public ResponseEntity<ApiResponse<PageResponseDTO<Student>>> getAllStudentsWithAllDetails(Pageable pageable) {
 
-        Page<Student> response = studentService.getAllStudents(pageable);
+        Page<Student> response = studentService.getAllStudentsWithAllDetails(pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -57,6 +58,22 @@ public class StudentController {
                         .data(PageUtil.toPageResponse(response))
                         .build());
     }
+
+    @PostMapping("/allWithLimitedDetails")
+    public ResponseEntity<ApiResponse<PageResponseDTO<LimitedStudentResponseDTO>>> getAllStudentsWithAllWithLimitedDetails(Pageable pageable) {
+
+        Page<LimitedStudentResponseDTO> response = studentService.getAllStudentsWithLimitedDetails(pageable);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.<PageResponseDTO<LimitedStudentResponseDTO>>builder()
+                        .success(true)
+                        .message("Students retrieved successfully")
+                        .data(PageUtil.toPageResponse(response))
+                        .build());
+    }
+
+
 
     @PostMapping("/getStudentById")
     public ResponseEntity<ApiResponse<Student>> getStudentById(@RequestBody StudentRequestDTO request) {
