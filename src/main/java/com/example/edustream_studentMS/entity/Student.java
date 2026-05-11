@@ -16,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class Student {
 
     @Id
@@ -49,22 +50,6 @@ public class Student {
 
     @Column(name = "created_at", updatable = false, insertable = false)
     private LocalDateTime createdAt;
-
-    @Override
-    public String toString(){
-        return "Student { " +
-                "UUID: " + this.id +
-                ", studentId: '" + studentId +
-                ", firstName='" + firstName +
-                ", lastName='" + lastName +
-                ", email='" + email +
-                ", dob='" + dob +
-                ", enrollmentDate='" + enrollmentDate +
-                ", studentStatus='" + studentStatus +
-                ", courseId='" + courseId +
-                ", createdAt='" + createdAt +
-                " }";
-    }
 
 }
 
