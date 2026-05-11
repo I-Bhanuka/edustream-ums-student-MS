@@ -1,6 +1,7 @@
 package com.example.edustream_studentMS.service.impl;
 
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
+import com.example.edustream_studentMS.dto.responseDTO.LimitedStudentResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
 import com.example.edustream_studentMS.entity.Student;
 import com.example.edustream_studentMS.enums.StudentStatus;
@@ -63,8 +64,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<Student> getAllStudents(Pageable pageable) {
-        log.info("================================ Get All Students Paginated ==============================");
+    public Page<Student> getAllStudentsWithAllDetails(Pageable pageable) {
+        log.info("================================ Get All Students Paginated with all details ==============================");
 
         // Call the database to retrieve the paginated list of students
         log.info("Retrieving students from database with pagination - Page Number: {}, Page Size: {}, Sort: {}",
@@ -85,6 +86,35 @@ public class StudentServiceImpl implements StudentService {
             log.info("Student found with Student Id: {} First Name: {}, Last Name: {}, Email: {}, DOB: {}, Enrollment Date: {}, Status: {}",
                     student.getStudentId(), student.getFirstName(), student.getLastName(), student.getEmail(),
                     student.getDob(), student.getEnrollmentDate(), student.getStudentStatus());
+        }
+
+        return response;
+
+    }
+
+    @Override
+    public Page<LimitedStudentResponseDTO> getAllStudentsWithLimitedDetails(Pageable pageable) {
+        log.info("================================ Get All Students Paginated with limited details ==============================");
+
+        // Call the database to retrieve the paginated list of students
+        log.info("Retrieving students for limited details from database with pagination - Page Number: {}, Page Size: {}, Sort: {}",
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                pageable.getSort());
+
+        Page<LimitedStudentResponseDTO> response = studentRepository.findAllWithLimitedDetails(pageable);
+
+        if (response.isEmpty()) {
+            log.warn("No records were found.");
+            throw new StudentNotFoundException("any Id");
+        }
+
+        log.info("Retrieved students successfully with limited details. Total number of students found: {}", response.getTotalElements());
+
+        for (LimitedStudentResponseDTO student : response) {
+            log.info("Student found with Student Id: {} First Name: {}, Last Name: {}, Email: {}, DOB: {}, Enrollment Date: {}, Status: {}, Course UUID: {}",
+                    student.getStudentId(), student.getFirstName(), student.getLastName(), student.getEmail(),
+                    student.getDob(), student.getEnrollmentDate(), student.getStudentStatus(), student.getCourseUUID());
         }
 
         return response;
