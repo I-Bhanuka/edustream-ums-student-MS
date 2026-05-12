@@ -6,6 +6,7 @@ import com.example.edustream_studentMS.dto.responseDTO.LimitedStudentResponseDTO
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
 import com.example.edustream_studentMS.entity.Student;
 import com.example.edustream_studentMS.enums.StudentStatus;
+import com.example.edustream_studentMS.exception.AlreadyEnrolledException;
 import com.example.edustream_studentMS.exception.StudentNotFoundException;
 import com.example.edustream_studentMS.repository.StudentRepository;
 import com.example.edustream_studentMS.service.StudentService;
@@ -145,6 +146,12 @@ public class StudentServiceImpl implements StudentService {
         // Find the student by the given student ID
         Student std = findStudentByStudentId(studentId);
         log.info("Student found with student id {}. Proceeding to register to course with UUID {}.", studentId, courseUUID);
+
+        // Check if the student is already registered to a course
+        if (std.getCourseId() != null) {
+            log.warn("Student with student id {} is already registered to course with UUID {}. Cannot register to another course.", studentId, std.getCourseId());
+            throw new AlreadyEnrolledException(studentId);
+        }
 
         // Update courseUUID field in the course entity
         std.setCourseId(courseUUID);
