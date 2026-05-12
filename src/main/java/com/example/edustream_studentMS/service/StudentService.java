@@ -1,11 +1,14 @@
 package com.example.edustream_studentMS.service;
 
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
+import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentToCourseRequestDTO;
 import com.example.edustream_studentMS.dto.responseDTO.LimitedStudentResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
 import com.example.edustream_studentMS.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.UUID;
 
 public interface StudentService {
     String testService();
@@ -17,4 +20,6 @@ public interface StudentService {
     Page<LimitedStudentResponseDTO> getAllStudentsWithLimitedDetails(Pageable pageable);
 
     Student getStudentById(String studentId);
+
+    String registerStudentToCourse(RegisterStudentToCourseRequestDTO requestDTO);
 }

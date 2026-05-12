@@ -1,6 +1,7 @@
 package com.example.edustream_studentMS.service.impl;
 
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
+import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentToCourseRequestDTO;
 import com.example.edustream_studentMS.dto.responseDTO.LimitedStudentResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
 import com.example.edustream_studentMS.entity.Student;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -130,6 +132,30 @@ public class StudentServiceImpl implements StudentService {
         return findStudentByStudentId(studentId);
     }
 
+    @Override
+    public String registerStudentToCourse(RegisterStudentToCourseRequestDTO requestDTO) {
+
+        // Extracting values from the DTO
+        String studentId = requestDTO.getStudentId();
+        UUID courseUUID = requestDTO.getCourseUUID();
+
+        // Find the Student by studentId
+        log.info("==================== Register Student to Course =================");
+
+        // Find the student by the given student ID
+        Student std = findStudentByStudentId(studentId);
+        log.info("Student found with student id {}. Proceeding to register to course with UUID {}.", studentId, courseUUID);
+
+        // Update courseUUID field in the course entity
+        std.setCourseId(courseUUID);
+
+        // Save the updated student to the database
+        log.info("Saving the updated student with student id {} to database after registering to course with UUID {}.", studentId, courseUUID);
+        studentRepository.save(std);
+
+        return "Student with studentId " + studentId + " has been registered to course with UUID " + courseUUID;
+    }
+
     /**
      *  ================================= Helper Methods =================================
      */
@@ -190,7 +216,7 @@ public class StudentServiceImpl implements StudentService {
             throw new StudentNotFoundException("Id: " + studentId);
         }
 
-        log.info("Student found with student id {}", studentId);
+        log.info("Student found: {}", std.toString());
         return std;
     }
 }
