@@ -1,7 +1,11 @@
 spring:
   application:
-    name: edustream_studentMS
+    name: edustream-student-ms # must match the filename in the config repo exactly
     # Application name Configuration
+
+  config:
+    import: configserver:http://localhost:8888
+
 
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
@@ -28,14 +32,6 @@ spring:
         default-page-size: 5
         max-page-size: 100
       # Pagination configuration
-
-server:
-  port: 8082
-  # Server port Configuration
-
-  servlet:
-    context-path: /student
-    # Set the Context path
 
 management:
   endpoints:
