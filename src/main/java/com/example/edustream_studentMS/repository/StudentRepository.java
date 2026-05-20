@@ -40,7 +40,10 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
             s.dob,
             s.enrollmentDate,
             s.studentStatus,
-            s.courseId
+            s.courseId,
+            s.academicsStanding,
+            s.currentGpa,
+            s.comultativeGpa
         )
         FROM Student s
     """
