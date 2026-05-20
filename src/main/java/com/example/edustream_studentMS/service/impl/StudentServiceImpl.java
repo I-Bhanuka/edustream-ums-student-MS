@@ -51,6 +51,9 @@ public class StudentServiceImpl implements StudentService {
                 .dob(LocalDate.parse(registerStudentRequestDTO.getDob()))
                 .enrollmentDate(LocalDate.now())
                 .studentStatus(StudentStatus.ACTIVE)
+                .academicsStanding("N/A")
+                .currentGpa(0.0)
+                .comultativeGpa(0.0)
                 .build();
 
         // Save the new student to the database
