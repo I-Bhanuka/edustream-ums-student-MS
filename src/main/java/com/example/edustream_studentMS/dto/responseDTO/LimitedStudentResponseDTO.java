@@ -1,6 +1,7 @@
 package com.example.edustream_studentMS.dto.responseDTO;
 
 import com.example.edustream_studentMS.enums.StudentStatus;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -27,4 +28,10 @@ public class LimitedStudentResponseDTO {
     private StudentStatus studentStatus;
 
     private UUID courseUUID;
+
+    private String academicsStanding;
+
+    private double currentGpa;
+
+    private double comultativeGpa;
 }
