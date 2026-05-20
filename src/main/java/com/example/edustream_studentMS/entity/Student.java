@@ -51,5 +51,13 @@ public class Student {
     @Column(name = "created_at", updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "academics_standing", length = 20)
+    private String academicsStanding;
+
+    @Column(name = "current_gpa")
+    private Double currentGpa;
+
+    @Column(name = "comultative_gpa")
+    private Double comultativeGpa;
 }
 
