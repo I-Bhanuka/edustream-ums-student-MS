@@ -3,7 +3,7 @@ package com.example.edustream_studentMS.controller;
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
 import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentToCourseRequestDTO;
 import com.example.edustream_studentMS.dto.requestDTO.StudentRequestDTO;
-import com.example.edustream_studentMS.dto.responseDTO.ApiResponse;
+import com.example.edustream_lib_common.responseDTO.ApiResponse;
 import com.example.edustream_studentMS.dto.responseDTO.LimitedStudentResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.PageResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
@@ -39,11 +39,8 @@ public class StudentController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.<RegisterStudentResponseDTO>builder()
-                        .success(true)
-                        .message("Student registered successfully")
-                        .data(response)
-                        .build());
+                .body(ApiResponse.success(response, "Student registered successfully"));
+
     }
 
     @PostMapping("/all")
@@ -53,11 +50,7 @@ public class StudentController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.<PageResponseDTO<Student>>builder()
-                        .success(true)
-                        .message("Students retrieved successfully")
-                        .data(PageUtil.toPageResponse(response))
-                        .build());
+                .body(ApiResponse.success(PageUtil.toPageResponse(response), "Students retrieved successfully"));
     }
 
     @PostMapping("/allWithLimitedDetails")
@@ -67,11 +60,8 @@ public class StudentController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.<PageResponseDTO<LimitedStudentResponseDTO>>builder()
-                        .success(true)
-                        .message("Students retrieved successfully")
-                        .data(PageUtil.toPageResponse(response))
-                        .build());
+                .body(ApiResponse.success(PageUtil.toPageResponse(response), "Students retrieved successfully"));
+
     }
 
 
@@ -81,12 +71,10 @@ public class StudentController {
 
         Student response = studentService.getStudentById(request.getStudentId());
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.<Student>builder()
-                        .success(true)
-                        .message("Student retrieved successfully")
-                        .data(response)
-                        .build());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "Student retrieved successfully"));
+
     }
 
     @PostMapping("/registerToCourse")
@@ -95,12 +83,10 @@ public class StudentController {
 
         String response = studentService.registerStudentToCourse(request);
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.<String>builder()
-                        .success(true)
-                        .message("Student registered to course successfully")
-                        .data(response)
-                        .build());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "Student registered to course successfully"));
+
     }
 
 
