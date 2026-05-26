@@ -35,6 +35,13 @@
 			<artifactId>spring-boot-h2console</artifactId>
 		</dependency>
 
+		<!-- UMS Libraries -->
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>edustream_lib-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<!-- Intercepts the Spring startup process at the very earliest phase, contacts Config Server. Without it does not know config server exists	-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
