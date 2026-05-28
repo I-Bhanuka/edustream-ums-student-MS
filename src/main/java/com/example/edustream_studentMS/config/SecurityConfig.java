@@ -1,5 +1,7 @@
 package com.example.edustream_studentMS.config;
 
+import com.example.edustream_lib_security.exception.CustomAccessDeniedHandler;
+import com.example.edustream_lib_security.exception.CustomAuthenticationEntryPoint;
 import com.example.edustream_lib_security.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +22,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Setup
                 .csrf(csrf -> csrf.disable())
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+                // Exceptions
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                        .accessDeniedHandler(new CustomAccessDeniedHandler())
+                )
+
+                // Rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",
@@ -34,6 +44,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
+                // Filter Override
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
