@@ -9,6 +9,9 @@ import com.example.edustream_studentMS.dto.responseDTO.PageResponseDTO;
 import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
 import com.example.edustream_studentMS.entity.Student;
 import com.example.edustream_studentMS.service.StudentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,17 +24,21 @@ import util.PageUtil;
 @RestController
 @RequestMapping("api")
 @RequiredArgsConstructor
+@Tag(name = "Student Controller", description = "Endpoints for managing students")
+@SecurityRequirement(name = "bearerAuth")
 public class StudentController {
 
     private final StudentService studentService;
 
     @GetMapping("/test")
+    @Operation(summary = "Test Endpoint", description = "A simple endpoint to test if the service is running")
     public String testEndpoint() {
 
         return studentService.testService();
     }
 
     @PostMapping("/create")
+    @Operation(summary = "Register Student", description = "Endpoint to register a new student")
     public ResponseEntity<ApiResponse<RegisterStudentResponseDTO>> registerStudent(
             @Valid @RequestBody RegisterStudentRequestDTO registerStudentRequestDTO) {
 
@@ -44,6 +51,7 @@ public class StudentController {
     }
 
     @PostMapping("/all")
+    @Operation(summary = "Get All Students with All Details", description = "Endpoint to retrieve all students with all their details")
     public ResponseEntity<ApiResponse<PageResponseDTO<Student>>> getAllStudentsWithAllDetails(Pageable pageable) {
 
         Page<Student> response = studentService.getAllStudentsWithAllDetails(pageable);
@@ -54,6 +62,7 @@ public class StudentController {
     }
 
     @PostMapping("/allWithLimitedDetails")
+    @Operation(summary = "Get All Students with Limited Details", description = "Endpoint to retrieve all students with limited details (id, name, email)")
     public ResponseEntity<ApiResponse<PageResponseDTO<LimitedStudentResponseDTO>>> getAllStudentsWithAllWithLimitedDetails(Pageable pageable) {
 
         Page<LimitedStudentResponseDTO> response = studentService.getAllStudentsWithLimitedDetails(pageable);
@@ -67,6 +76,7 @@ public class StudentController {
 
 
     @PostMapping("/getStudentById")
+    @Operation(summary = "Get Student by ID", description = "Endpoint to retrieve a student by their ID")
     public ResponseEntity<ApiResponse<Student>> getStudentById(@RequestBody StudentRequestDTO request) {
 
         Student response = studentService.getStudentById(request.getStudentId());
@@ -78,6 +88,7 @@ public class StudentController {
     }
 
     @PostMapping("/registerToCourse")
+    @Operation(summary = "Register Student to Course", description = "Endpoint to register a student to a course")
     public ResponseEntity<ApiResponse<String>> registerStudentToCourse(
             @RequestBody RegisterStudentToCourseRequestDTO request) {
 
