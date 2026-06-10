@@ -36,4 +36,8 @@ public class Convocation {
 
     @Column(name = "supplicant_end_date", nullable = false)
     private LocalDate supplicantEndDate;
+
+    @JoinColumn(name = "convocation_status_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) // Many records from this table will refer to one record on the other
+    private ConvocationStatus convocationStatusId;
 }
