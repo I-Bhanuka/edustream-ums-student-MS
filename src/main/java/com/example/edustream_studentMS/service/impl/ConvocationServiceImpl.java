@@ -2,6 +2,7 @@ package com.example.edustream_studentMS.service.impl;
 
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationRequest;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationAddResponse;
+import com.example.edustream_studentMS.dto.responseDTO.ConvocationBasicResponse;
 import com.example.edustream_studentMS.entity.Convocation;
 import com.example.edustream_studentMS.entity.ConvocationStatus;
 import com.example.edustream_studentMS.repository.ConvocationRepository;
@@ -74,9 +75,25 @@ public class ConvocationServiceImpl implements ConvocationService {
 
 
 
-    // Helper Methods
+
+
+    // ============================= Helper Methods
+
+    // For mapping Convocation entity to ConvocationAddResponse DTO
     public ConvocationAddResponse mapToConvocationAddResponse(Convocation convocation) {
         return ConvocationAddResponse.builder()
+                .convocationId(convocation.getId())
+                .convocationName(convocation.getConvocationName())
+                .convocationYear(convocation.getConvocationYear())
+                .convocationPayment(convocation.getConvocationPayment())
+                .supplicantOpenDate(convocation.getSupplicantOpenDate())
+                .supplicantEndDate(convocation.getSupplicantEndDate())
+                .build();
+    }
+
+    // For mapping Convocation entity to ConvocationBasicResponse DTO
+    public ConvocationBasicResponse mapToConvocationBasicResponse(Convocation convocation) {
+        return ConvocationBasicResponse.builder()
                 .convocationId(convocation.getId())
                 .convocationName(convocation.getConvocationName())
                 .convocationYear(convocation.getConvocationYear())
