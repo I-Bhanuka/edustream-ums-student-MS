@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @ToString
-public class ConvocationBasicResponse {
+public class ConvocationResponse {
 
     private UUID convocationId;
 

@@ -2,20 +2,20 @@ package com.example.edustream_studentMS.service.impl;
 
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationRequest;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationAddResponse;
-import com.example.edustream_studentMS.dto.responseDTO.ConvocationBasicResponse;
+import com.example.edustream_studentMS.dto.responseDTO.ConvocationResponse;
 import com.example.edustream_studentMS.entity.Convocation;
 import com.example.edustream_studentMS.entity.ConvocationStatus;
 import com.example.edustream_studentMS.repository.ConvocationRepository;
 import com.example.edustream_studentMS.repository.ConvocationStatusRepository;
 import com.example.edustream_studentMS.service.ConvocationService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.example.edustream_lib_security.util.SecurityContextUtil;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -73,6 +73,16 @@ public class ConvocationServiceImpl implements ConvocationService {
         return mapToConvocationAddResponse(dbResponse);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<ConvocationResponse> getAllConvocations() {
+        log.info("================================ Get All Convocations ==============================");
+        List<Convocation> convocations = convocationRepository.findAllByDeletedFalse();
+        log.info("Total Convocations retrieved: {}", convocations.size());
+        return convocations.stream()
+                .map(this::mapToConvocationResponse)
+                .toList();
+    }
 
 
 
@@ -92,8 +102,8 @@ public class ConvocationServiceImpl implements ConvocationService {
     }
 
     // For mapping Convocation entity to ConvocationBasicResponse DTO
-    public ConvocationBasicResponse mapToConvocationBasicResponse(Convocation convocation) {
-        return ConvocationBasicResponse.builder()
+    public ConvocationResponse mapToConvocationResponse(Convocation convocation) {
+        return ConvocationResponse.builder()
                 .convocationId(convocation.getId())
                 .convocationName(convocation.getConvocationName())
                 .convocationYear(convocation.getConvocationYear())
