@@ -42,14 +42,17 @@ public class Convocation {
     @ManyToOne(fetch = FetchType.LAZY) // Many records from this table will refer to one record on the other
     private ConvocationStatus convocationStatusId;
 
+    // Should be UUID but here it is String because in my Sec context, username is stored
     @Column(name = "created_by")
-    private UUID createdBy;
+    private String createdBy;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    // Should be UUID but here it is String because in my Sec context, username is stored
+
     @Column(name = "updated_by")
-    private UUID updatedBy;
+    private String updatedBy;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
@@ -63,8 +66,9 @@ public class Convocation {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    // Should be UUID but here it is String because in my Sec context, username is stored
     @Column(name = "deleted_by")
-    private UUID deletedBy;
+    private String deletedBy;
 
     // onCreate() runs automatically just before the entity is inserted into the database.
     @PrePersist
