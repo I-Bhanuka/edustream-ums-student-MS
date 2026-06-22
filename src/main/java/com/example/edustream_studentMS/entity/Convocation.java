@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -40,4 +41,29 @@ public class Convocation {
     @JoinColumn(name = "convocation_status_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY) // Many records from this table will refer to one record on the other
     private ConvocationStatus convocationStatusId;
+
+    @Column(name = "created_by")
+    private UUID createdBy;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_by")
+    private UUID updatedBy;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted;
+
+    @Column(name = "delete_remarks", length = 1000)
+    private String deleteRemarks;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted_by")
+    private UUID deletedBy;
+
 }
