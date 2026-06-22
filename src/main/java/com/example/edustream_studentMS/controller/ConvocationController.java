@@ -2,9 +2,8 @@ package com.example.edustream_studentMS.controller;
 
 import com.example.edustream_lib_common.responseDTO.ApiResponse;
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationRequest;
-import com.example.edustream_studentMS.dto.requestDTO.RegisterStudentRequestDTO;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationAddResponse;
-import com.example.edustream_studentMS.dto.responseDTO.RegisterStudentResponseDTO;
+import com.example.edustream_studentMS.dto.responseDTO.ConvocationResponse;
 import com.example.edustream_studentMS.service.ConvocationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,10 +12,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/convocation")
@@ -38,5 +36,16 @@ public class ConvocationController {
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.success(response, "Convocation created successfully"));
 
+    }
+
+    @GetMapping
+    @Operation(summary = "Get All Convocations", description = "Endpoint to retrieve all convocations")
+    public ResponseEntity<ApiResponse<List<ConvocationResponse>>> getAllConvocations() {
+
+        List<ConvocationResponse> response = convocationService.getAllConvocations();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "Convocations retrieved successfully"));
     }
 }
