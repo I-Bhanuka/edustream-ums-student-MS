@@ -66,4 +66,17 @@ public class Convocation {
     @Column(name = "deleted_by")
     private UUID deletedBy;
 
+    // onCreate() runs automatically just before the entity is inserted into the database.
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    // onUpdate() runs automatically just before an existing entity is updated in the database.
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
 }
