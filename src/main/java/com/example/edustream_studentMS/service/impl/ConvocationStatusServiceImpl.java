@@ -7,6 +7,7 @@ import com.example.edustream_studentMS.service.ConvocationStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class ConvocationStatusServiceImpl implements ConvocationStatusService {
 
     private final ConvocationStatusRepository convocationStatusRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<ConvocationStatusResponse> getAllConvocationStatus() {
         log.info("================================ Get All Convocation Status ==============================");
