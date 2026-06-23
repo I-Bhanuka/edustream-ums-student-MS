@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,64 +24,71 @@ public class Convocation {
     @UuidGenerator
     private UUID id;
 
-    @Column(name = "convocation_name", length = 100, nullable = false)
-    private String convocationName;
+    // DDL: name nvarchar(255) NOT NULL
+    @Column(name = "name", length = 255, nullable = false)
+    private String name;
 
-    @Column(name = "convocation_year", nullable = false)
-    private int convocationYear;
+    // DDL: year smallint NOT NULL → use short because of 16 bits
+    @Column(name = "year", nullable = false)
+    private short year;
 
-    @Column(name = "convocation_payment", nullable = false)
-    private double convocationPayment;
+    // DDL: payment decimal(10,2) NULL → BigDecimal to handle for money values accurately
+    @Column(name = "payment", precision = 10, scale = 2)
+    private BigDecimal payment;
 
-    @Column(name = "supplicant_open_date", nullable = false)
-    private LocalDate supplicantOpenDate;
+    // DDL: suppliment_open_date date NULL (note: DDL has a typo "suppliment")
+    @Column(name = "suppliment_open_date")
+    private LocalDate supplementOpenDate;
 
-    @Column(name = "supplicant_end_date", nullable = false)
-    private LocalDate supplicantEndDate;
+    // DDL: suppliment_end_date date NULL
+    @Column(name = "suppliment_end_date")
+    private LocalDate supplementEndDate;
 
-    @JoinColumn(name = "convocation_status_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY) // Many records from this table will refer to one record on the other
-    private ConvocationStatus convocationStatusId;
+    // DDL: status_id uniqueidentifier NOT NULL → FK column must match DDL name
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
+    private ConvocationStatus status;
 
-    // Should be UUID but here it is String because in my Sec context, username is stored
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    // Should be UUID but here it is String because in my Sec context, username is stored
-
-    @Column(name = "updated_by")
-    private String updatedBy;
+    // DDL: created_by uniqueidentifier NULL
+    // Using String instead of UUID because the security context stores usernames
+    @Column(name = "created_by")
+    private String createdBy;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "deleted", nullable = false)
-    private Boolean deleted;
+    // DDL: updated_by uniqueidentifier NULL
+    // Using String instead of UUID because the security context stores usernames
+    @Column(name = "updated_by")
+    private String updatedBy;
 
-    @Column(name = "delete_remarks", length = 1000)
-    private String deleteRemarks;
+    // DDL: updated_by_ip nvarchar(45) NULL
+    @Column(name = "updated_by_ip", length = 45)
+    private String updatedByIp;
 
+    // DDL: deleted_at datetime2 NULL
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    // Should be UUID but here it is String because in my Sec context, username is stored
+    // DDL: deleted_by uniqueidentifier NULL
+    // Using String instead of UUID because the security context stores usernames
     @Column(name = "deleted_by")
     private String deletedBy;
 
-    // onCreate() runs automatically just before the entity is inserted into the database.
+    // Do we need it?
+    // private boolean deleted;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
 
-    // onUpdate() runs automatically just before an existing entity is updated in the database.
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
 }
