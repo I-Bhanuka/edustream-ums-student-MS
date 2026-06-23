@@ -9,5 +9,5 @@ import java.util.UUID;
 public interface ConvocationRepository extends JpaRepository<Convocation, UUID> {
 
     // Return only intakes that are not deleted
-    List<Convocation> findAllByDeletedFalse();
+//    List<Convocation> findAllByDeletedFalse();
 }
