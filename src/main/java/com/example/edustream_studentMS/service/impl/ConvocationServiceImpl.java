@@ -54,15 +54,15 @@ public class ConvocationServiceImpl implements ConvocationService {
                 .orElseThrow(() -> new RuntimeException("Convocation Status 'NOT HELD' not found"));
 
         // Set the ConvocationStatusId in the Convocation entity
-        convocation.setConvocationStatusId(convocationStatusId);
+        convocation.setStatus(convocationStatusId);
 
         // Set the remaining fields in the Convocation entity using the data from the ConvocationRequest
-        convocation.setConvocationName(convocationRequest.getConvocationName());
-        convocation.setConvocationYear(convocationRequest.getConvocationYear());
-        convocation.setConvocationPayment(convocationRequest.getConvocationPayment());
-        convocation.setSupplicantOpenDate(convocationRequest.getSupplicantOpenDate());
-        convocation.setSupplicantEndDate(convocationRequest.getSupplicantEndDate());
-        convocation.setDeleted(false);
+        convocation.setName(convocationRequest.getConvocationName());
+        convocation.setYear(convocationRequest.getConvocationYear());
+        convocation.setPayment(convocationRequest.getConvocationPayment());
+        convocation.setSupplementOpenDate(convocationRequest.getSupplicantOpenDate());
+        convocation.setSupplementEndDate(convocationRequest.getSupplicantEndDate());
+        // convocation.setDeleted(false);
 
         // Save to the database
         log.info("Saving Convocation to the database...");
@@ -77,7 +77,8 @@ public class ConvocationServiceImpl implements ConvocationService {
     @Override
     public List<ConvocationResponse> getAllConvocations() {
         log.info("================================ Get All Convocations ==============================");
-        List<Convocation> convocations = convocationRepository.findAllByDeletedFalse();
+//        List<Convocation> convocations = convocationRepository.findAllByDeletedFalse();
+        List<Convocation> convocations = convocationRepository.findAll();
         log.info("Total Convocations retrieved: {}", convocations.size());
         return convocations.stream()
                 .map(this::mapToConvocationResponse)
@@ -93,11 +94,11 @@ public class ConvocationServiceImpl implements ConvocationService {
     public ConvocationAddResponse mapToConvocationAddResponse(Convocation convocation) {
         return ConvocationAddResponse.builder()
                 .convocationId(convocation.getId())
-                .convocationName(convocation.getConvocationName())
-                .convocationYear(convocation.getConvocationYear())
-                .convocationPayment(convocation.getConvocationPayment())
-                .supplicantOpenDate(convocation.getSupplicantOpenDate())
-                .supplicantEndDate(convocation.getSupplicantEndDate())
+                .convocationName(convocation.getName())
+                .convocationYear(convocation.getYear())
+                .convocationPayment(convocation.getPayment())
+                .supplicantOpenDate(convocation.getSupplementOpenDate())
+                .supplicantEndDate(convocation.getSupplementEndDate())
                 .build();
     }
 
@@ -105,11 +106,11 @@ public class ConvocationServiceImpl implements ConvocationService {
     public ConvocationResponse mapToConvocationResponse(Convocation convocation) {
         return ConvocationResponse.builder()
                 .convocationId(convocation.getId())
-                .convocationName(convocation.getConvocationName())
-                .convocationYear(convocation.getConvocationYear())
-                .convocationPayment(convocation.getConvocationPayment())
-                .supplicantOpenDate(convocation.getSupplicantOpenDate())
-                .supplicantEndDate(convocation.getSupplicantEndDate())
+                .convocationName(convocation.getName())
+                .convocationYear(convocation.getYear())
+                .convocationPayment(convocation.getPayment())
+                .supplicantOpenDate(convocation.getSupplementOpenDate())
+                .supplicantEndDate(convocation.getSupplementEndDate())
                 .build();
     }
 
