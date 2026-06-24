@@ -1,8 +1,10 @@
 package com.example.edustream_studentMS.service.impl;
 
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationRequest;
+import com.example.edustream_studentMS.dto.requestDTO.ManageConvocationRequest;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationAddResponse;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationResponse;
+import com.example.edustream_studentMS.dto.responseDTO.ManageConvocationResponse;
 import com.example.edustream_studentMS.entity.Convocation;
 import com.example.edustream_studentMS.entity.ConvocationStatus;
 import com.example.edustream_studentMS.repository.ConvocationRepository;
@@ -86,6 +88,30 @@ public class ConvocationServiceImpl implements ConvocationService {
     }
 
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<ManageConvocationResponse> searchConvocations(ManageConvocationRequest request) {
+        log.info("================================ Search Convocations ==============================");
+        log.info("Search Convocation Request details - Convocation Name: {}, Year: {}, Status: {}",
+                request.getConvocationName(),
+                request.getConvocationYear(),
+                request.getConvocationStatus());
+
+        List<Convocation> convocations = convocationRepository.searchConvocations(
+                request.getConvocationName(),
+                request.getConvocationYear(),
+                request.getConvocationStatus()
+        );
+
+        log.info("Total Convocations found: {}", convocations.size());
+
+        return convocations.stream()
+                .map(this::mapToManageConvocationResponse)
+                .toList();
+    }
+
+
+
 
 
     // ============================= Helper Methods
@@ -96,6 +122,7 @@ public class ConvocationServiceImpl implements ConvocationService {
                 .convocationId(convocation.getId())
                 .convocationName(convocation.getName())
                 .convocationYear(convocation.getYear())
+                .convocationStatus(convocation.getStatus().getStatus())
                 .convocationPayment(convocation.getPayment())
                 .supplicantOpenDate(convocation.getSupplementOpenDate())
                 .supplicantEndDate(convocation.getSupplementEndDate())
@@ -108,9 +135,19 @@ public class ConvocationServiceImpl implements ConvocationService {
                 .convocationId(convocation.getId())
                 .convocationName(convocation.getName())
                 .convocationYear(convocation.getYear())
+                .convocationStatus(convocation.getStatus().getStatus())
                 .convocationPayment(convocation.getPayment())
                 .supplicantOpenDate(convocation.getSupplementOpenDate())
                 .supplicantEndDate(convocation.getSupplementEndDate())
+                .build();
+    }
+
+    public ManageConvocationResponse mapToManageConvocationResponse(Convocation convocation) {
+        return ManageConvocationResponse.builder()
+                .convocationId(convocation.getId())
+                .convocationName(convocation.getName())
+                .convocationYear(convocation.getYear())
+                .convocationStatus(convocation.getStatus().getStatus())
                 .build();
     }
 
