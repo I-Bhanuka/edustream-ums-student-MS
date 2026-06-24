@@ -2,20 +2,24 @@ package com.example.edustream_studentMS.controller;
 
 import com.example.edustream_lib_common.responseDTO.ApiResponse;
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationRequest;
+import com.example.edustream_studentMS.dto.requestDTO.ManageConvocationRequest;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationAddResponse;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationResponse;
+import com.example.edustream_studentMS.dto.responseDTO.ManageConvocationResponse;
 import com.example.edustream_studentMS.service.ConvocationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("api/convocation")
 @RequiredArgsConstructor
@@ -47,5 +51,18 @@ public class ConvocationController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(response, "Convocations retrieved successfully"));
+    }
+
+
+    @PostMapping("/search")
+    @Operation(summary = "Search Convocations to manage convocations", description = "Endpoint to search convocations based on criteria")
+    public ResponseEntity<ApiResponse<List<ManageConvocationResponse>>> searchConvocations(
+            @Valid @RequestBody ManageConvocationRequest request) {
+
+        List<ManageConvocationResponse> response = convocationService.searchConvocations(request);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "Convocations searched successfully"));
     }
 }
