@@ -7,6 +7,7 @@ import com.example.edustream_studentMS.dto.responseDTO.ConvocationResponse;
 import com.example.edustream_studentMS.dto.responseDTO.ManageConvocationResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ConvocationService {
 
@@ -15,4 +16,6 @@ public interface ConvocationService {
     List<ConvocationResponse> getAllConvocations();
 
     List<ManageConvocationResponse> searchConvocations(ManageConvocationRequest convocationRequest);
+
+    ConvocationResponse getConvocationById(UUID id);
 }

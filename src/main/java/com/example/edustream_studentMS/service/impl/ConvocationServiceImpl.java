@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -108,6 +109,20 @@ public class ConvocationServiceImpl implements ConvocationService {
         return convocations.stream()
                 .map(this::mapToManageConvocationResponse)
                 .toList();
+    }
+
+
+    @Transactional(readOnly = true)
+    public ConvocationResponse getConvocationById(UUID id) {
+        log.info("================================ Get Convocation By ID ==============================");
+        log.info("Get Convocation by ID: {}", id);
+
+        Convocation convocation = convocationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Convocation not found with ID: " + id));
+
+        log.info("Convocation retrieved: {}", convocation);
+
+        return mapToConvocationResponse(convocation);
     }
 
 
