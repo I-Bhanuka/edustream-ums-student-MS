@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -64,5 +65,18 @@ public class ConvocationController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(response, "Convocations searched successfully"));
+    }
+
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get Convocation by ID", description = "Endpoint to retrieve a convocation by its ID")
+    public ResponseEntity<ApiResponse<ConvocationResponse>> getConvocationById(
+            @PathVariable("id") UUID id) {
+
+        ConvocationResponse response = convocationService.getConvocationById(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "Convocation retrieved successfully"));
     }
 }
