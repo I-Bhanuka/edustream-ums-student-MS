@@ -1,5 +1,6 @@
 package com.example.edustream_studentMS.dto.responseDTO;
 
+import com.example.edustream_studentMS.enums.ConvocationStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -19,6 +20,8 @@ public class ConvocationResponse {
     private String convocationName;
 
     private short convocationYear;
+
+    private String convocationStatus;
 
     private BigDecimal convocationPayment;
 
