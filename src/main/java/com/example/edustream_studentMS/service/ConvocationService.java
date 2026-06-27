@@ -21,4 +21,5 @@ public interface ConvocationService {
 
     List<String> getAllConvocationNames();
 
+    List<String> getConvocationNames(String name);
 }

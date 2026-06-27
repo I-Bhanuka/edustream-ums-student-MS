@@ -20,6 +20,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
+/**
+ * Implementation of the ConvocationService interface.
+ * ==============================
+ * Available service methods,
+ * 1. createConvocation: Creates a new convocation based on the provided request data.
+ * 2. getAllConvocations: Retrieves a list of all convocations.
+ * 3. searchConvocations: Searches for convocations based on the provided criteria.
+ * 4. getConvocationById: Retrieves a convocation by its unique identifier.
+ * 5. getAllConvocationNames: Retrieves a list of all convocation names.
+ * 6. getConvocationNames: Retrieves a list of convocation names matching the provided name.
+ * ==============================
+ * Available helper methods,
+ * 1. mapToConvocationAddResponse: Maps a Convocation entity to a ConvocationAddResponse DTO.
+ * 2. mapToConvocationResponse: Maps a Convocation entity to a ConvocationResponse DTO.
+ * 3. mapToManageConvocationResponse: Maps a Convocation entity to a ManageConvocationResponse DTO.
+ */
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -133,6 +151,16 @@ public class ConvocationServiceImpl implements ConvocationService {
         log.info("================================ Get All Convocation Names ==============================");
         List<String> convocationNames = convocationRepository.findNames(null);
         log.info("Total Convocation Names retrieved: {}", convocationNames.size());
+        return convocationNames;
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<String> getConvocationNames(String name) {
+        log.info("================================ Get Convocation Names matching = \"{}\" ==============================", name);
+        List<String> convocationNames = convocationRepository.findNames(name);
+        log.info("Total Convocation Names retrieved for name '{}': {}", name, convocationNames.size());
         return convocationNames;
     }
 
