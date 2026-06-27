@@ -18,4 +18,7 @@ public interface ConvocationService {
     List<ManageConvocationResponse> searchConvocations(ManageConvocationRequest convocationRequest);
 
     ConvocationResponse getConvocationById(UUID id);
+
+    List<String> getAllConvocationNames();
+
 }

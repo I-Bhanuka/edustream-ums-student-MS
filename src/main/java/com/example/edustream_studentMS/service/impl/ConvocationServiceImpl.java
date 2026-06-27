@@ -113,6 +113,7 @@ public class ConvocationServiceImpl implements ConvocationService {
 
 
     @Transactional(readOnly = true)
+    @Override
     public ConvocationResponse getConvocationById(UUID id) {
         log.info("================================ Get Convocation By ID ==============================");
         log.info("Get Convocation by ID: {}", id);
@@ -123,6 +124,16 @@ public class ConvocationServiceImpl implements ConvocationService {
         log.info("Convocation retrieved: {}", convocation);
 
         return mapToConvocationResponse(convocation);
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<String> getAllConvocationNames() {
+        log.info("================================ Get All Convocation Names ==============================");
+        List<String> convocationNames = convocationRepository.findNames(null);
+        log.info("Total Convocation Names retrieved: {}", convocationNames.size());
+        return convocationNames;
     }
 
 
