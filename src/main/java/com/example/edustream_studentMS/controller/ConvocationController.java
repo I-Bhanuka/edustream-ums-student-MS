@@ -79,4 +79,20 @@ public class ConvocationController {
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(response, "Convocation retrieved successfully"));
     }
+
+
+    @GetMapping("/name/all")
+    @Operation(summary = "Get All Convocation Names", description = "Endpoint to retrieve all convocation names")
+    public ResponseEntity<ApiResponse<List<String>>> getAllConvocationNames() {
+
+        List<String> response = convocationService.getAllConvocationNames();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "All convocation names retrieved successfully"));
+
+    }
+
+
+
 }
