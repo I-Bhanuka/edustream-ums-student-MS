@@ -22,10 +22,28 @@ public interface ConvocationRepository extends JpaRepository<Convocation, UUID> 
             "JOIN c.status cs " +
             "WHERE (:name IS NULL OR LOWER(c.name) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))) " +
             "AND (:year IS NULL OR c.year = :year) " +
-            "AND (:status IS NULL OR cs.status = CAST(:status AS string))")
+            "AND (:status IS NULL OR cs.status = CAST(:status AS string))" +
+            "ORDER BY c.createdAt DESC")
     List<Convocation> searchConvocations(
             @Param("name") String name,
             @Param("year") Short year,
             @Param("status") String status
     );
+
+    // If name parameter is null, return everything
+    // If name parameter has empty string, return everything
+    // If name parameter has a value, return only those that match the name
+    // Use LOWER to make the search case-insensitive
+    //      search filer and the actual DB values are converted to lower case before comparison
+    //      Then it will check for "%name%"
+    @Query("""
+    SELECT c.name
+    FROM Convocation c
+    WHERE (:name IS NULL
+           OR :name = ''
+           OR LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%')))
+    ORDER BY c.name
+    """)
+    List<String> findNames(@Param("name") String name);
+
 }
