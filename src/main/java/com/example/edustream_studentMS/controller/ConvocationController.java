@@ -94,5 +94,14 @@ public class ConvocationController {
     }
 
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<ApiResponse<List<String>>> getConvocationNames(
+            @PathVariable("name") String name) {
 
+        List<String> response = convocationService.getConvocationNames(name);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "Convocation names retrieved successfully"));
+    }
 }
