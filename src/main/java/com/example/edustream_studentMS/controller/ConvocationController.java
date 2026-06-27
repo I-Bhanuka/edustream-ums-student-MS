@@ -20,6 +20,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ * Implementation for Convocation Controller
+ * Exposes the endpoints for Convocation management
+ * =============================
+ * Available endpoints:
+ * 1. create: Creates a new convocation based on the provided request data.
+ * 2. getAllConvocations: Retrieves a list of all convocations.
+ * 3. searchConvocations: Searches for convocations based on the provided criteria.
+ * 4. getConvocationById: Retrieves a convocation by its unique identifier.
+ * 5. getAllConvocationNames: Retrieves a list of all convocation names.
+ * 6. getConvocationNames: Retrieves a list of convocation names matching the provided name.
+ */
+
 @Slf4j
 @RestController
 @RequestMapping("api/convocation")
