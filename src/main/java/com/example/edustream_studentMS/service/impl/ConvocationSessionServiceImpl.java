@@ -16,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -84,6 +86,29 @@ public class ConvocationSessionServiceImpl implements ConvocationSessionService 
         log.info("Convocation session saved: {}", savedConvocationSession.toString());
 
         return mapToConvocationSessionResponse(savedConvocationSession);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ConvocationSessionResponse> getConvocationSessionsByConvocationId(UUID convocationId) {
+        log.info("================================ Get Convocation Sessions by Convocation ID ==============================");
+        log.info("Fetching convocation sessions for convocationId: {}", convocationId);
+
+        // Fetch all ConvocationSession entities associated with the given convocationId
+        List<ConvocationSession> convocationSessions = convocationSessionRepository.findByConvocationId(convocationId);
+
+        if (convocationSessions.isEmpty()) {
+            log.warn("No Convocation Sessions found for convocationId: {}", convocationId);
+            return List.of(); // Return an empty list if no records found
+        }
+
+        log.info("Found {} Convocation Sessions for convocationId: {}", convocationSessions.size(), convocationId);
+
+        // Map each ConvocationSession entity to a ConvocationSessionResponse DTO
+        return convocationSessions.stream()
+                .map(this::mapToConvocationSessionResponse)
+                .toList();
     }
 
 
