@@ -22,6 +22,9 @@ public class ConvocationStatus {
     @Column(name = "id")
     private UUID id;
 
+    @Column(name = "name", length = 50, nullable = false)
+    private String name;
+
     @Column(name = "status", length = 45, nullable = false)
     private String status;
 
