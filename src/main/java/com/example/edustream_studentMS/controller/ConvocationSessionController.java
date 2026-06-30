@@ -2,6 +2,7 @@ package com.example.edustream_studentMS.controller;
 
 import com.example.edustream_lib_common.responseDTO.ApiResponse;
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionApproveRequest;
+import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionRejectRequest;
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionRequest;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationSessionResponse;
 import com.example.edustream_studentMS.service.ConvocationSessionService;
@@ -70,5 +71,19 @@ public class ConvocationSessionController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(response, "Convocation session approved successfully"));
+    }
+
+    @PostMapping("/reject/{sessionId}")
+    @Operation(summary = "Reject Convocation Session", description = "Rejects a convocation session by its ID")
+    public ResponseEntity<ApiResponse<ConvocationSessionResponse>> rejectConvocationSession(
+            @PathVariable UUID sessionId, @Valid @RequestBody ConvocationSessionRejectRequest request) {
+
+        log.info("Reject convocation session with ID: {}", sessionId);
+
+        ConvocationSessionResponse response = convocationSessionService.rejectConvocationSession(sessionId, request);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "Convocation session rejected successfully"));
     }
 }
