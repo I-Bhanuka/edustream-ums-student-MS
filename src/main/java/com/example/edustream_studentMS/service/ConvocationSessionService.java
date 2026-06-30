@@ -1,6 +1,7 @@
 package com.example.edustream_studentMS.service;
 
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionApproveRequest;
+import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionRejectRequest;
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionRequest;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationSessionResponse;
 
@@ -14,4 +15,6 @@ public interface ConvocationSessionService {
     List<ConvocationSessionResponse> getConvocationSessionsByConvocationId(UUID convocationId);
 
     ConvocationSessionResponse approveConvocationSession(UUID convocationSessionId, ConvocationSessionApproveRequest request);
+
+    ConvocationSessionResponse rejectConvocationSession(UUID convocationSessionId, ConvocationSessionRejectRequest request);
 }

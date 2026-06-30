@@ -2,6 +2,7 @@ package com.example.edustream_studentMS.service.impl;
 
 import com.example.edustream_lib_security.util.SecurityContextUtil;
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionApproveRequest;
+import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionRejectRequest;
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionRequest;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationSessionResponse;
 import com.example.edustream_studentMS.entity.Convocation;
@@ -150,6 +151,49 @@ public class ConvocationSessionServiceImpl implements ConvocationSessionService 
         log.info("Updating Convocation Session status to APPROVED...");
         ConvocationSession updatedConvocationSession = convocationSessionRepository.save(convocationSession);
         log.info("Convocation session approved: {}", updatedConvocationSession.toString());
+
+        return mapToConvocationSessionResponse(updatedConvocationSession);
+    }
+
+
+    @Override
+    @Transactional
+    public ConvocationSessionResponse rejectConvocationSession(UUID convocationSessionId, ConvocationSessionRejectRequest request) {
+        log.info("================================ Reject Convocation Session ==============================");
+        log.info("Rejecting convocation session with ID: {}", convocationSessionId);
+
+        LocalDateTime instanceTime = LocalDateTime.now();
+        String currentUserId = securityContextUtil.getCurrentUserId().orElse(null);
+
+        // Fetch the ConvocationSession entity by ID
+        ConvocationSession convocationSession = convocationSessionRepository.findById(convocationSessionId)
+                .orElseThrow(() -> new NotFoundException("Convocation Session not found: " + convocationSessionId));
+
+        // Load the REJECTED status from the database
+        ConvocationSessionStatus rejectedStatus = convocationSessionStatusRepository.findByStatus("REJECTED")
+                .orElseThrow(() -> new NotFoundException("Convocation Session Status not found: REJECTED"));
+
+        // Update the status of the ConvocationSession entity to REJECTED
+        convocationSession.setStatus(rejectedStatus);
+
+        // Set remarks if provided in the request
+        String rejectRemarks = request.getSessionRejectRemarks();
+        if (rejectRemarks != null) {
+            convocationSession.setRejectReason(rejectRemarks);
+        }
+
+        // RejectedAt and RejectedBy
+        convocationSession.setApprovedOrRejectedAt(instanceTime);
+        convocationSession.setApprovedOrRejectedBy(currentUserId);
+
+        // Set the updatedBy field with the current user's ID from the security context
+        convocationSession.setUpdatedBy(currentUserId);
+        convocationSession.setUpdatedAt(instanceTime);
+
+        // Save the updated ConvocationSession entity to the database
+        log.info("Updating Convocation Session status to REJECTED...");
+        ConvocationSession updatedConvocationSession = convocationSessionRepository.save(convocationSession);
+        log.info("Convocation session rejected: {}", updatedConvocationSession.toString());
 
         return mapToConvocationSessionResponse(updatedConvocationSession);
     }
