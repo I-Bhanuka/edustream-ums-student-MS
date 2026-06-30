@@ -109,6 +109,7 @@ public class ConvocationController {
 
 
     @GetMapping("/name/{name}")
+    @Operation(summary = "Get Convocation Names by matching name", description = "Endpoint to retrieve convocation names matching the provided name")
     public ResponseEntity<ApiResponse<List<String>>> getConvocationNames(
             @PathVariable("name") String name) {
 
