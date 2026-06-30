@@ -1,6 +1,7 @@
 package com.example.edustream_studentMS.service.impl;
 
 import com.example.edustream_lib_security.util.SecurityContextUtil;
+import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionApproveRequest;
 import com.example.edustream_studentMS.dto.requestDTO.ConvocationSessionRequest;
 import com.example.edustream_studentMS.dto.responseDTO.ConvocationSessionResponse;
 import com.example.edustream_studentMS.entity.Convocation;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -107,6 +109,49 @@ public class ConvocationSessionServiceImpl implements ConvocationSessionService 
         return convocationSessions.stream()
                 .map(this::mapToConvocationSessionResponse)
                 .toList();
+    }
+
+
+    @Override
+    @Transactional
+    public ConvocationSessionResponse approveConvocationSession(UUID convocationSessionId, ConvocationSessionApproveRequest request) {
+        log.info("================================ Approve Convocation Session ==============================");
+        log.info("Approving convocation session with ID: {}", convocationSessionId);
+
+        // Because during updatedAt and approvedOrRejectedAt we need to set the same time, so we are creating a LocalDateTime instance here
+        // Otherwise the times would be different if we call LocalDateTime.now() multiple times
+        LocalDateTime instanceTime = LocalDateTime.now();
+        String currentUserId = securityContextUtil.getCurrentUserId().orElse(null);
+
+        // Fetch the ConvocationSession entity by ID
+        ConvocationSession convocationSession = convocationSessionRepository.findById(convocationSessionId)
+                .orElseThrow(() -> new NotFoundException("Convocation Session not found: " + convocationSessionId));
+
+        // Load the APPROVED status from the database
+        ConvocationSessionStatus approvedStatus = convocationSessionStatusRepository.findByStatus("APPROVED")
+                .orElseThrow(() -> new NotFoundException("Convocation Session Status not found: APPROVED"));
+
+        // Update the status of the ConvocationSession entity to APPROVED
+        convocationSession.setStatus(approvedStatus);
+
+//        // Set remarks if provided in the request
+//        if (request.getSessionApprovalRemarks() != null) {
+//            convocationSession.setApproveRemarks(request.getSessionApprovalRemarks());
+
+        // ApprovedAt and ApprovedBy
+        convocationSession.setApprovedOrRejectedAt(instanceTime);
+        convocationSession.setApprovedOrRejectedBy(currentUserId);
+
+        // Set the updatedBy field with the current user's ID from the security context
+        convocationSession.setUpdatedBy(currentUserId);
+        convocationSession.setUpdatedAt(instanceTime);
+
+        // Save the updated ConvocationSession entity to the database
+        log.info("Updating Convocation Session status to APPROVED...");
+        ConvocationSession updatedConvocationSession = convocationSessionRepository.save(convocationSession);
+        log.info("Convocation session approved: {}", updatedConvocationSession.toString());
+
+        return mapToConvocationSessionResponse(updatedConvocationSession);
     }
 
 
