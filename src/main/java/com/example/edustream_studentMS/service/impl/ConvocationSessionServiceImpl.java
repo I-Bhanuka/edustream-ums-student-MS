@@ -65,11 +65,9 @@ public class ConvocationSessionServiceImpl implements ConvocationSessionService 
         convocationSession.setSessionDate(request.getSessionDate());
         convocationSession.setFromTime(request.getFromTime());
         convocationSession.setToTime(request.getToTime());
+        convocationSession.setCapacity(request.getCapacity());
 
         // These values are optional, so we check if they are provided in the request before setting them
-        if (request.getCapacity() != null) {
-            convocationSession.setCapacity(request.getCapacity());
-        }
         if (request.getNoOfPasses() != null) {
             convocationSession.setNoOfPasses(request.getNoOfPasses());
         }
