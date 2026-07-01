@@ -12,6 +12,8 @@ public interface ConvocationSessionService {
 
     ConvocationSessionResponse createConvocationSession(ConvocationSessionRequest request);
 
+    ConvocationSessionResponse getConvocationSessionById(UUID convocationSessionId);
+
     List<ConvocationSessionResponse> getConvocationSessionsByConvocationId(UUID convocationId);
 
     ConvocationSessionResponse approveConvocationSession(UUID convocationSessionId, ConvocationSessionApproveRequest request);

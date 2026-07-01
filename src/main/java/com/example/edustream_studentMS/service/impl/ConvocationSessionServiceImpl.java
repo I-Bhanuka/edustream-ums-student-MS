@@ -92,6 +92,22 @@ public class ConvocationSessionServiceImpl implements ConvocationSessionService 
 
     @Override
     @Transactional(readOnly = true)
+    public ConvocationSessionResponse getConvocationSessionById(UUID convocationSessionId) {
+        log.info("================================ Get Convocation Session by ID ==============================");
+        log.info("Fetching convocation session for convocationSessionId: {}", convocationSessionId);
+
+        // Fetch the ConvocationSession entity by ID
+        ConvocationSession convocationSession = convocationSessionRepository.findById(convocationSessionId)
+                .orElseThrow(() -> new NotFoundException("Convocation Session not found: " + convocationSessionId));
+
+        log.info("Found Convocation Session: {}", convocationSession);
+
+        return mapToConvocationSessionResponse(convocationSession);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
     public List<ConvocationSessionResponse> getConvocationSessionsByConvocationId(UUID convocationId) {
         log.info("================================ Get Convocation Sessions by Convocation ID ==============================");
         log.info("Fetching convocation sessions for convocationId: {}", convocationId);
