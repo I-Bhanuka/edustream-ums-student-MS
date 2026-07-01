@@ -44,6 +44,20 @@ public class ConvocationSessionController {
     }
 
 
+    @GetMapping("/{sessionId}")
+    @Operation(summary = "Get Convocation Session by ID", description = "Retrieves a convocation session by its ID")
+    public ResponseEntity<ApiResponse<ConvocationSessionResponse>> getConvocationSessionById(@PathVariable UUID sessionId) {
+
+        log.info("Get convocation session with ID: {}", sessionId);
+
+        ConvocationSessionResponse response = convocationSessionService.getConvocationSessionById(sessionId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "Convocation session retrieved successfully"));
+    }
+
+
     @GetMapping("/convocation-sesssions/{convocationId}")
     @Operation(summary = "Get Convocation Sessions by Convocation ID", description = "Retrieves convocation sessions by convocation ID")
     public  ResponseEntity<ApiResponse<List<ConvocationSessionResponse>>> getConvocationSessionsByConvocationId(
